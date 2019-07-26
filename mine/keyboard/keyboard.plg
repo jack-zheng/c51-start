@@ -1,0 +1,16 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\Jack\gitStore\c51-start\mine\keyboard\keyboard.uvproj
+Project File Date:  07/26/2019
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling keyboard.c...
+keyboard.c(2): warning C318: can't open file 'DIG_PIPE.h'
+linking...
+Program Size: data=9.0 xdata=0 code=16
+"keyboard" - 0 Error(s), 1 Warning(s).
