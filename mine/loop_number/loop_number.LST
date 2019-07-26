@@ -1,0 +1,78 @@
+C51 COMPILER V9.01   LOOP_NUMBER                                                           07/26/2019 20:34:29 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE LOOP_NUMBER
+OBJECT MODULE PLACED IN loop_number.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE loop_number.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /**
+   2          * In this sample, I will loop and show 1-9 on the first digital pipe
+   3          */
+   4          #include "reg52.h"
+   5          #include "intrins.h"
+   6          
+   7          sbit dig_data = P0^2;
+   8          sbit shcp = P0^4;
+   9          sbit stcp = P2^3;
+  10          
+  11          // the common port of pipes is Vcc
+  12          code unsigned char position = 0x01;
+  13          code unsigned char num[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x98, 0xc0};
+  14          
+  15          void delay() {
+  16   1              unsigned int i,j;
+  17   1              for (i=0;i<1000;i++)
+  18   1                      for(j=0;j<100;j++);
+  19   1      }
+  20          
+  21          void showNumber(unsigned char num, unsigned char pos){
+  22   1              unsigned short i;
+  23   1              shcp=0;
+  24   1              stcp=0;
+  25   1              for(i=0;i<8;i++){
+  26   2                      dig_data = num&0x80;
+  27   2                      _nop_();
+  28   2                      shcp = 1;
+  29   2                      _nop_();
+  30   2                      shcp = 0;
+  31   2                      num <<= 1;
+  32   2              }
+  33   1      
+  34   1              for(i=0;i<8;i++){
+  35   2                      dig_data = pos&0x80;
+  36   2                      _nop_();
+  37   2                      shcp = 1;
+  38   2                      _nop_();
+  39   2                      shcp = 0;
+  40   2                      pos <<= 1;
+  41   2              }
+  42   1              stcp = 1;
+  43   1              delay();
+  44   1      }
+  45          
+  46          void main(void){
+  47   1              unsigned char i;
+  48   1              while(1){
+  49   2                      for (i=0;i<10;i++){
+  50   3                              showNumber(num[i], position);
+  51   3                      }
+  52   2              }
+  53   1      }
+
+
+C51 COMPILER V9.01   LOOP_NUMBER                                                           07/26/2019 20:34:29 PAGE 2   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    117    ----
+   CONSTANT SIZE    =     12    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
