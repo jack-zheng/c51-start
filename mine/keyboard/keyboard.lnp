@@ -1,4 +1,4 @@
 "STARTUP.obj",
 "keyboard.obj",
-"..\mylib\DIG_PIPE.LIB" 
+"dig.obj" 
 TO "keyboard" 

@@ -356,6 +356,11 @@
               <FileType>1</FileType>
               <FilePath>.\keyboard.c</FilePath>
             </File>
+            <File>
+              <FileName>DIG_PIPE.LIB</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\mylib\DIG_PIPE.LIB</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

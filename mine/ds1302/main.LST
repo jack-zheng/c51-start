@@ -1,0 +1,124 @@
+C51 COMPILER V9.01   MAIN                                                                  07/28/2019 02:04:31 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h>
+   2          #include "dig.h"
+   3          
+   4          sbit clk = P3^6;
+   5          sbit io = P2^1;
+   6          sbit ce = P3^7;
+   7          
+   8          // read second from chip
+   9          
+  10          void init(){
+  11   1              ce = 0;
+  12   1              clk = 0;
+  13   1      }
+  14          /**
+  15          * CE to high
+  16          */
+  17          unsigned int readData(){
+  18   1              unsigned char sec_addr = 0x8d;
+  19   1              unsigned char i;
+  20   1              unsigned int ret;
+  21   1              init();
+  22   1      
+  23   1              ce = 1;
+  24   1              // give command to ds chip
+  25   1              for(i=0;i<8;i++){
+  26   2                      clk = 0;
+  27   2                      if(sec_addr&0x01){
+  28   3                              io = 1;
+  29   3                      }else{
+  30   3                              io = 0;
+  31   3                      }
+  32   2                      clk = 1;
+  33   2                      sec_addr >>= 1;
+  34   2              }
+  35   1              
+  36   1              // read sec value
+  37   1              for(i=0;i<8;i++){
+  38   2                      clk = 0;
+  39   2                      ret >>= 1;
+  40   2      
+  41   2                      if(io){
+  42   3                              ret |= 0x80;
+  43   3                      }else{
+  44   3                              ret &= ~0x80;
+  45   3                      }
+  46   2                      clk = 1;
+  47   2              }
+  48   1              
+  49   1              return (ret);       
+  50   1      }
+  51          //      unsigned char year_addr = 0x8c;
+  52                  //unsigned int year_val = 0x19;
+  53          void writeData(unsigned char addr, unsigned char val){
+  54   1      
+  55   1              unsigned char i;
+C51 COMPILER V9.01   MAIN                                                                  07/28/2019 02:04:31 PAGE 2   
+
+  56   1      
+  57   1              init();
+  58   1      
+  59   1              ce = 1;
+  60   1              // give command to ds chip
+  61   1              for(i=0;i<8;i++){
+  62   2                      clk = 0;
+  63   2                      if(addr&0x01){
+  64   3                              io = 1;
+  65   3                      }else{
+  66   3                              io = 0;
+  67   3                      }
+  68   2                      clk = 1;
+  69   2                      addr >>= 1;
+  70   2              }
+  71   1              
+  72   1              // write year value
+  73   1              for(i=0;i<8;i++){
+  74   2                      clk = 0;
+  75   2                      if(val & 0x01)
+  76   2                      {
+  77   3                              io = 1;
+  78   3                      }else{
+  79   3                              io = 0;
+  80   3                      }
+  81   2                      clk = 1;
+  82   2                      val >>= 1;
+  83   2              }
+  84   1      }
+  85          
+  86          void main(void){
+  87   1              unsigned int ret;
+  88   1              // turn off WP
+  89   1              writeData(0x8e, 0x00);
+  90   1              // write year
+  91   1              writeData(0x8c, 0x19);
+  92   1              // turn of WP
+  93   1              writeData(0x8e, 0x80);
+  94   1              while(1){
+  95   2                      ret = readData();
+  96   2                      
+  97   2                      display(ret);
+  98   2              }
+  99   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    156    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

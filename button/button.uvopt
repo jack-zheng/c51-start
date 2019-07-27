@@ -188,7 +188,7 @@
       <Focus>0</Focus>
       <ColumnNumber>10</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>10</TopLine>
+      <TopLine>1</TopLine>
       <CurrentLine>10</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\button.c</PathWithFileName>
@@ -1542,7 +1542,7 @@
         <Doc>
           <Name>.\button.c</Name>
           <ColumnNumber>10</ColumnNumber>
-          <TopLine>10</TopLine>
+          <TopLine>1</TopLine>
           <CurrentLine>10</CurrentLine>
         </Doc>
       </Documents>
