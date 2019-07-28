@@ -1,0 +1,349 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/29/2019  00:54:16  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE STARTUP.obj, main.obj, IIC_drv.obj TO daconvertion
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  main.obj (MAIN)
+  IIC_drv.obj (IIC_DRV)
+
+
+LINK MAP OF MODULE:  daconvertion (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0004H     UNIT         _DATA_GROUP_
+            IDATA   000CH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0049H     UNIT         ?PR?MAIN?MAIN
+            CODE    004CH     0039H     UNIT         ?PR?_READIIC?IIC_DRV
+            CODE    0085H     0028H     UNIT         ?PR?_WRITEIIC?IIC_DRV
+            CODE    00ADH     0024H     UNIT         ?PR?RESPONS?IIC_DRV
+            CODE    00D1H     0016H     UNIT         ?PR?READBYTE?IIC_DRV
+            CODE    00E7H     0015H     UNIT         ?PR?_WRITEBYTE?IIC_DRV
+            CODE    00FCH     000CH     UNIT         ?C_C51STARTUP
+            CODE    0108H     0007H     UNIT         ?PR?START?IIC_DRV
+            CODE    010FH     0007H     UNIT         ?PR?STOP?IIC_DRV
+            CODE    0116H     0007H     UNIT         ?PR?NORESPONS?IIC_DRV
+
+
+
+OVERLAY MAP OF MODULE:   daconvertion (?C_STARTUP)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?MAIN
+
+?PR?MAIN?MAIN                  0008H    0004H
+  +--> ?PR?_WRITEIIC?IIC_DRV
+
+?PR?_WRITEIIC?IIC_DRV          -----    -----
+  +--> ?PR?RESPONS?IIC_DRV
+  +--> ?PR?_WRITEBYTE?IIC_DRV
+  +--> ?PR?STOP?IIC_DRV
+
+?PR?RESPONS?IIC_DRV            -----    -----
+  +--> ?PR?START?IIC_DRV
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/29/2019  00:54:16  PAGE 2
+
+
+  +--> ?PR?_WRITEBYTE?IIC_DRV
+
+
+
+SYMBOL TABLE OF MODULE:  daconvertion (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:00FCH         SEGMENT       ?C_C51STARTUP
+  I:000CH         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:00FFH         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:00FCH         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:00FCH         LINE#         133
+  C:00FEH         LINE#         134
+  C:00FFH         LINE#         135
+  C:0100H         LINE#         136
+  C:0102H         LINE#         185
+  C:0105H         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  -------         DO            
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/29/2019  00:54:16  PAGE 3
+
+
+  D:0008H         SYMBOL        state
+  D:0009H         SYMBOL        input
+  D:000AH         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         8
+  C:0003H         LINE#         11
+  C:0006H         LINE#         12
+  C:000AH         LINE#         14
+  C:000AH         LINE#         15
+  C:0012H         LINE#         16
+  C:001BH         LINE#         17
+  C:0020H         LINE#         18
+  C:0024H         LINE#         19
+  C:0026H         LINE#         20
+  C:0026H         LINE#         22
+  C:002BH         LINE#         23
+  C:002EH         LINE#         24
+  C:002EH         LINE#         26
+  C:0032H         LINE#         27
+  C:003DH         LINE#         28
+  C:003FH         LINE#         29
+  C:003FH         LINE#         30
+  C:004AH         LINE#         31
+  C:004AH         LINE#         32
+  C:004AH         LINE#         33
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        IIC_DRV
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  C:0108H         SYMBOL        Start
+  C:00D1H         SYMBOL        ReadByte
+  B:00A0H.0       PUBLIC        Sda
+  D:00B8H         PUBLIC        IP
+  B:00A0H.1       PUBLIC        Scl
+  C:00E7H         SYMBOL        _WriteByte
+  C:010FH         SYMBOL        Stop
+  C:0116H         SYMBOL        NoRespons
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:004CH         PUBLIC        _ReadIIC
+  C:0085H         PUBLIC        _WriteIIC
+  D:00C8H         PUBLIC        T2CON
+  C:00B3H         SYMBOL        Respons
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          START
+  C:0108H         LINE#         22
+  C:0108H         LINE#         23
+  C:0108H         LINE#         24
+  C:010AH         LINE#         25
+  C:010CH         LINE#         26
+  C:010EH         LINE#         27
+  -------         ENDPROC       START
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/29/2019  00:54:16  PAGE 4
+
+
+  -------         PROC          STOP
+  C:010FH         LINE#         37
+  C:010FH         LINE#         38
+  C:010FH         LINE#         39
+  C:0111H         LINE#         40
+  C:0113H         LINE#         41
+  C:0115H         LINE#         42
+  -------         ENDPROC       STOP
+  -------         PROC          L?0037
+  -------         ENDPROC       L?0037
+  -------         PROC          RESPONS
+  -------         DO            
+  D:0007H         SYMBOL        OverTime
+  D:0006H         SYMBOL        TempFlag
+  -------         ENDDO         
+  C:00B3H         LINE#         54
+  C:00B3H         LINE#         55
+  C:00B3H         LINE#         56
+  C:00B5H         LINE#         57
+  C:00B6H         LINE#         58
+  C:00B6H         LINE#         59
+  C:00B8H         LINE#         60
+  C:00BAH         LINE#         61
+  C:00BAH         LINE#         62
+  C:00BAH         LINE#         63
+  C:00BDH         LINE#         64
+  C:00BDH         LINE#         65
+  C:00C6H         LINE#         66
+  C:00C6H         LINE#         67
+  C:00C8H         LINE#         68
+  C:00CAH         LINE#         69
+  C:00CAH         LINE#         70
+  C:00CAH         LINE#         72
+  C:00CAH         LINE#         73
+  C:00CCH         LINE#         74
+  C:00CCH         LINE#         75
+  C:00CCH         LINE#         76
+  C:00CCH         LINE#         77
+  C:00CEH         LINE#         78
+  C:00D0H         LINE#         79
+  -------         ENDPROC       RESPONS
+  -------         PROC          NORESPONS
+  C:0116H         LINE#         89
+  C:0116H         LINE#         90
+  C:0116H         LINE#         91
+  C:0118H         LINE#         92
+  C:011AH         LINE#         93
+  C:011CH         LINE#         94
+  -------         ENDPROC       NORESPONS
+  -------         PROC          _WRITEBYTE
+  D:0007H         SYMBOL        temp
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:00E7H         LINE#         104
+  C:00E7H         LINE#         105
+  C:00E7H         LINE#         107
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/29/2019  00:54:16  PAGE 5
+
+
+  C:00E9H         LINE#         108
+  C:00EBH         LINE#         109
+  C:00EBH         LINE#         110
+  C:00EFH         LINE#         111
+  C:00F3H         LINE#         112
+  C:00F5H         LINE#         113
+  C:00F7H         LINE#         114
+  C:00FBH         LINE#         115
+  -------         ENDPROC       _WRITEBYTE
+  -------         PROC          READBYTE
+  -------         DO            
+  D:0006H         SYMBOL        i
+  D:0007H         SYMBOL        ret
+  -------         ENDDO         
+  C:00D1H         LINE#         125
+  C:00D1H         LINE#         126
+  C:00D1H         LINE#         128
+  C:00D3H         LINE#         129
+  C:00D4H         LINE#         130
+  C:00D4H         LINE#         131
+  C:00D6H         LINE#         132
+  C:00DAH         LINE#         133
+  C:00E0H         LINE#         134
+  C:00E2H         LINE#         135
+  C:00E6H         LINE#         136
+  C:00E6H         LINE#         137
+  -------         ENDPROC       READBYTE
+  -------         PROC          _WRITEIIC
+  D:0006H         SYMBOL        device
+  D:0003H         SYMBOL        parameter
+  D:0004H         SYMBOL        temp
+  C:0085H         LINE#         149
+  C:008BH         LINE#         150
+  C:008BH         LINE#         151
+  C:008BH         LINE#         152
+  C:008BH         LINE#         153
+  C:0091H         LINE#         154
+  C:0091H         LINE#         155
+  C:0096H         LINE#         156
+  C:009CH         LINE#         157
+  C:009CH         LINE#         158
+  C:00A1H         LINE#         159
+  C:00A5H         LINE#         160
+  C:00A5H         LINE#         161
+  C:00A5H         LINE#         162
+  C:00A5H         LINE#         164
+  C:00A5H         LINE#         165
+  C:00A5H         LINE#         166
+  C:00A5H         LINE#         167
+  C:00A7H         LINE#         169
+  C:00A7H         LINE#         170
+  C:00A7H         LINE#         171
+  C:00A7H         LINE#         172
+  C:00A9H         LINE#         174
+  C:00A9H         LINE#         175
+  C:00ACH         LINE#         176
+  C:00ACH         LINE#         177
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/29/2019  00:54:16  PAGE 6
+
+
+  -------         ENDPROC       _WRITEIIC
+  -------         PROC          _READIIC
+  D:0003H         SYMBOL        device
+  D:0002H         SYMBOL        parameter
+  -------         DO            
+  D:0004H         SYMBOL        ret
+  -------         ENDDO         
+  C:004CH         LINE#         188
+  C:0050H         LINE#         189
+  C:0050H         LINE#         191
+  C:0050H         LINE#         192
+  C:0050H         LINE#         193
+  C:0056H         LINE#         194
+  C:0056H         LINE#         195
+  C:005BH         LINE#         196
+  C:0061H         LINE#         197
+  C:0061H         LINE#         198
+  C:0064H         LINE#         199
+  C:006BH         LINE#         200
+  C:0071H         LINE#         201
+  C:0071H         LINE#         202
+  C:0076H         LINE#         203
+  C:0079H         LINE#         204
+  C:0079H         LINE#         205
+  C:007BH         LINE#         207
+  C:007BH         LINE#         208
+  C:007BH         LINE#         209
+  C:007BH         LINE#         210
+  C:007DH         LINE#         212
+  C:007DH         LINE#         213
+  C:007DH         LINE#         214
+  C:007DH         LINE#         215
+  C:007FH         LINE#         217
+  C:007FH         LINE#         218
+  C:0082H         LINE#         219
+  C:0082H         LINE#         220
+  C:0084H         LINE#         221
+  -------         ENDPROC       _READIIC
+  -------         ENDMOD        IIC_DRV
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_READIIC?IIC_DRV
+
+Program Size: data=13.0 xdata=0 code=285
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)
