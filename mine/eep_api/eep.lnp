@@ -1,0 +1,5 @@
+"STARTUP.obj",
+"main.obj",
+"digitron_drv.obj",
+"IIC_drv.obj" 
+TO "eep" 

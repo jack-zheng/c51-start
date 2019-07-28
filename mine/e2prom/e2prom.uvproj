@@ -43,7 +43,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\</OutputDirectory>
-          <OutputName>ds1302</OutputName>
+          <OutputName>e2prom</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -344,12 +344,12 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>group</GroupName>
+          <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>dig.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\dig.c</FilePath>
+              <FileName>STARTUP.A51</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\STARTUP.A51</FilePath>
             </File>
             <File>
               <FileName>main.c</FileName>
@@ -357,9 +357,24 @@
               <FilePath>.\main.c</FilePath>
             </File>
             <File>
-              <FileName>dig.h</FileName>
+              <FileName>digitron_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\digitron_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>digitron_drv.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\dig.h</FilePath>
+              <FilePath>.\digitron_drv.h</FilePath>
+            </File>
+            <File>
+              <FileName>IO_def.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\IO_def.h</FilePath>
+            </File>
+            <File>
+              <FileName>type.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\type.h</FilePath>
             </File>
           </Files>
         </Group>

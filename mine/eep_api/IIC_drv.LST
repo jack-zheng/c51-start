@@ -1,0 +1,253 @@
+C51 COMPILER V9.01   IIC_DRV                                                               07/28/2019 20:52:05 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE IIC_DRV
+OBJECT MODULE PLACED IN IIC_drv.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE IIC_drv.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*=======================================================
+   2          <<<<<<<<<<<<<<<<<<< Collect By Jack >>>>>>>>>>>>>>>>>>>>
+   3          ---------------------------------------------------------
+   4          ---------------------------------------------------------
+   5                         All right reserved.2019.07
+   6          ---------------------------------------------------------
+   7           file name: IIC_drv.c
+   8           desc: driver of IIC protocal
+   9           author: ?
+  10          =========================================================
+  11          ----------------------------------------------------------------------------------------------------------
+             --*/
+  12          #include "IIC_drv.h"
+  13          
+  14          /**********************************************
+  15          desc:
+  16              start communication
+  17          params:
+  18              none
+  19          return:
+  20              void
+  21          **********************************************/
+  22          static void Start(void)
+  23          {
+  24   1              Sda = 1;
+  25   1              Scl = 1;
+  26   1              Sda = 0;
+  27   1      }
+  28          
+  29          /**********************************************
+  30          desc:
+  31              stop communication
+  32          params:
+  33              none
+  34          return:
+  35              void
+  36          **********************************************/
+  37          static void Stop(void)
+  38          {
+  39   1              Sda = 0;
+  40   1              Scl = 1;
+  41   1              Sda = 1;
+  42   1      }
+  43          
+  44          /**********************************************
+  45          desc:
+  46              check if response feed back from device
+  47          params:
+  48                  none
+  49          return:
+  50                  if response give back
+  51                  1 for yes and 0 for no
+  52          **********************************************/
+  53          static unsigned char Respons(void)
+  54          {
+C51 COMPILER V9.01   IIC_DRV                                                               07/28/2019 20:52:05 PAGE 2   
+
+  55   1              unsigned char OverTime = 0;  
+  56   1              unsigned char TempFlag = 0;
+  57   1              OverTime = 0;
+  58   1          Sda = 1;     
+  59   1          Scl = 1;
+  60   1              while(1)
+  61   1              {
+  62   2                      if(Sda) 
+  63   2                      {
+  64   3                              if(OverTime++ > 200)
+  65   3                              {
+  66   4                                 TempFlag = 0; 
+  67   4                                 break;
+  68   4                              }
+  69   3                      }
+  70   2                      else
+  71   2                      {
+  72   3                          TempFlag = 1;   
+  73   3                              break;
+  74   3                      }
+  75   2              }
+  76   1              Scl = 0;
+  77   1              return TempFlag;
+  78   1      }
+  79          
+  80          /**********************************************
+  81          desc:
+  82              no acknowledge
+  83          params:
+  84              none
+  85          return:
+  86                  void
+  87          **********************************************/
+  88          static void NoRespons(void)
+  89          {
+  90   1          Sda = 1;
+  91   1          Scl = 1;
+  92   1              Scl = 0;
+  93   1      }
+  94          
+  95          /**********************************************
+  96          desc:
+  97              write byte to device
+  98          params:
+  99              temp: data to write
+ 100          return:
+ 101              void
+ 102          **********************************************/
+ 103          static void WriteByte(unsigned char temp)
+ 104          {
+ 105   1              unsigned char i;
+ 106   1              Scl = 0;
+ 107   1              for(i = 0;i < 8;i++)
+ 108   1              {
+ 109   2                      Sda = temp & 0x80;
+ 110   2                      temp <<= 1;
+ 111   2                      Scl = 1;
+ 112   2                      Scl = 0;
+ 113   2              }
+ 114   1      }
+ 115          
+ 116          /**********************************************
+C51 COMPILER V9.01   IIC_DRV                                                               07/28/2019 20:52:05 PAGE 3   
+
+ 117          desc:
+ 118              read byte
+ 119          params:
+ 120                  none
+ 121          return:
+ 122              the readed byte value
+ 123          **********************************************/
+ 124          static unsigned char ReadByte(void)
+ 125          {
+ 126   1              unsigned char i;
+ 127   1              unsigned char ret = 0;
+ 128   1              for(i = 0;i < 8;i++)
+ 129   1              {
+ 130   2                      Scl = 1;
+ 131   2                      ret <<= 1;
+ 132   2                      ret |= (unsigned char)Sda;
+ 133   2                      Scl = 0;        
+ 134   2              }
+ 135   1              return ret;
+ 136   1      }
+ 137          
+ 138          /**********************************************
+ 139          desc:
+ 140              write data to device
+ 141          params:
+ 142              device:             device address
+ 143              parameter: address to write data
+ 144              temp:     data to write
+ 145          return:
+ 146              void
+ 147          **********************************************/
+ 148          void WriteIIC(unsigned char device,unsigned char parameter,unsigned char temp)
+ 149          {
+ 150   1              Start();
+ 151   1              WriteByte(device);
+ 152   1              if(Respons())
+ 153   1              {
+ 154   2                      WriteByte(parameter);
+ 155   2                      if(Respons())
+ 156   2                      {
+ 157   3                              WriteByte(temp);
+ 158   3                              if(Respons())
+ 159   3                              {
+ 160   4                                      Stop();
+ 161   4                              }
+ 162   3                              else
+ 163   3                              {
+ 164   4                                      Stop();
+ 165   4                              }
+ 166   3                      }
+ 167   2                      else
+ 168   2                      {
+ 169   3                              Stop();
+ 170   3                      }
+ 171   2              }
+ 172   1              else
+ 173   1              {
+ 174   2                      Stop();
+ 175   2              }
+ 176   1      }
+ 177          
+ 178          /**********************************************
+C51 COMPILER V9.01   IIC_DRV                                                               07/28/2019 20:52:05 PAGE 4   
+
+ 179          desc:
+ 180              read data from chip
+ 181          params:¡êo
+ 182              device:   device address
+ 183              parameter:  data address
+ 184          return:
+ 185              the readed byte value
+ 186          **********************************************/
+ 187          unsigned char ReadIIC(unsigned char device,unsigned char parameter)
+ 188          {
+ 189   1              unsigned char ret;
+ 190   1              Start();
+ 191   1              WriteByte(device);
+ 192   1              if(Respons())
+ 193   1              {
+ 194   2                      WriteByte(parameter);
+ 195   2                      if(Respons())
+ 196   2                      {
+ 197   3                              Start();
+ 198   3                              WriteByte(device | 0x01);
+ 199   3                              if(Respons())
+ 200   3                              {
+ 201   4                                      ret = ReadByte();
+ 202   4                                      NoRespons();
+ 203   4                                      Stop();
+ 204   4                              }
+ 205   3                              else
+ 206   3                              {
+ 207   4                                      Stop();
+ 208   4                              }
+ 209   3                      }
+ 210   2                      else
+ 211   2                      {
+ 212   3                              Stop();
+ 213   3                      }
+ 214   2              }
+ 215   1              else
+ 216   1              {
+ 217   2                      Stop();
+ 218   2              }
+ 219   1              return ret;
+ 220   1      }
+ 221          
+ 222                  
+ 223          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    197    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

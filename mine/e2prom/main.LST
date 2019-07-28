@@ -1,0 +1,172 @@
+C51 COMPILER V9.01   MAIN                                                                  07/28/2019 20:19:36 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h>
+   2          #include "digitron_drv.h"
+   3          
+   4          sbit sda = P2^0;
+   5          sbit scl = P2^1;
+   6          
+   7          void start(void){
+   8   1              sda = 1;
+   9   1              scl = 1;
+  10   1              sda = 0;
+  11   1      }
+  12          
+  13          void stop(void) {
+  14   1              sda = 0;
+  15   1              scl = 1;
+  16   1              sda = 1;
+  17   1      }
+  18          
+  19          void writeByte(unsigned char dat){
+  20   1              unsigned char i;
+  21   1              for(i=0;i<8;i++){
+  22   2                      scl = 0;
+  23   2                      if(dat & 0x80){
+  24   3                              sda = 1;
+  25   3                      }else{
+  26   3                          sda = 0;
+  27   3                      }
+  28   2                      scl = 1;
+  29   2                      dat = dat << 1;
+  30   2              }
+  31   1              scl = 0;
+  32   1      }
+  33          
+  34          unsigned char respond(void){
+  35   1              unsigned char i = 0;
+  36   1              unsigned char flag;
+  37   1              sda = 1;
+  38   1              scl = 1;
+  39   1              while(1<200){
+  40   2                      i++;
+  41   2                      if(sda){
+  42   3                              flag = 0;
+  43   3                      }else{
+  44   3                              flag = 1;
+  45   3                              break;
+  46   3                      }
+  47   2              }
+  48   1              scl = 0;
+  49   1              return flag;
+  50   1      }
+  51          
+  52          void write(unsigned int dat){
+  53   1              start();
+  54   1              writeByte(0xa0);
+  55   1              if(respond()){
+C51 COMPILER V9.01   MAIN                                                                  07/28/2019 20:19:36 PAGE 2   
+
+  56   2                      P1 = 0xf0;
+  57   2                 writeByte(3);
+  58   2                 if(respond()){
+  59   3                      P1 = 0x0f;
+  60   3                      writeByte(dat);
+  61   3                      if(respond()){
+  62   4                              stop(); // communication over, stop process.
+  63   4                      } else{
+  64   4                              stop(); // no response, stop
+  65   4                      }
+  66   3                 }else{
+  67   3                      stop();
+  68   3                 }
+  69   2              }else{
+  70   2                      stop();
+  71   2              }
+  72   1      }
+  73          
+  74          unsigned char readByte(void){
+  75   1              unsigned char i;
+  76   1              unsigned char x = 0;
+  77   1              for(i = 0;i < 8;i++)
+  78   1              {
+  79   2                      scl = 1;
+  80   2                      x <<= 1;
+  81   2                      x |= (unsigned char)sda;
+  82   2                      scl = 0;        
+  83   2              }
+  84   1              return x;
+  85   1      }
+  86          
+  87          void noRespond(void){
+  88   1              sda = 1;
+  89   1              scl = 1;
+  90   1              scl =0; 
+  91   1      }
+  92          
+  93          unsigned char read(void){
+  94   1              unsigned char dat;
+  95   1              start();
+  96   1              writeByte(0xa0);
+  97   1              if(respond()){
+  98   2                      writeByte(3);
+  99   2                      if(respond()){
+ 100   3                              start();
+ 101   3                              writeByte(0xa1);
+ 102   3                              if(respond()){
+ 103   4                                      dat = readByte();
+ 104   4                                      noRespond();
+ 105   4                                      stop();
+ 106   4                              }else{
+ 107   4                                      stop();
+ 108   4                              }
+ 109   3      
+ 110   3                      }else{
+ 111   3                              stop();
+ 112   3                      }
+ 113   2              }else{
+ 114   2                      stop();
+ 115   2              }
+ 116   1              return dat;     
+ 117   1      }
+C51 COMPILER V9.01   MAIN                                                                  07/28/2019 20:19:36 PAGE 3   
+
+ 118          
+ 119          void delay(void){
+ 120   1              unsigned short i,j;
+ 121   1              for(i=0;i<100;i++)
+ 122   1                      for(j=0;j<500;j++);
+ 123   1      }
+ 124          
+ 125          void main(void){
+ 126   1              unsigned char num = 0;
+ 127   1              unsigned short i = 0;
+ 128   1              num = read();
+ 129   1              if(num>99){
+ 130   2                              num = 0;
+ 131   2              }
+ 132   1              while(1){
+ 133   2                      i++;
+ 134   2                      if (i>500){
+ 135   3                              i=0;
+ 136   3                              num++;
+ 137   3                              if(num>12){
+ 138   4                                      num=0;
+ 139   4                              }
+ 140   3                              write(num);
+ 141   3                      }
+ 142   2                      DigShowNumber(2, num/10, 0);
+ 143   2                      DigShowNumber(1, num%10, 0);
+ 144   2              }
+ 145   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    315    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
