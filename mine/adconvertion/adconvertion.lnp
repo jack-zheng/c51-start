@@ -1,0 +1,5 @@
+"STARTUP.obj",
+"adconvertion.obj",
+"digitron_drv.obj",
+"IIC_drv.obj" 
+TO "adconvertion" 

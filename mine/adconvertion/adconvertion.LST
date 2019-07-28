@@ -1,0 +1,50 @@
+C51 COMPILER V9.01   ADCONVERTION                                                          07/29/2019 00:22:40 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE ADCONVERTION
+OBJECT MODULE PLACED IN adconvertion.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE adconvertion.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h>
+   2          #include "digitron_drv.h"
+   3          #include "IIC_drv.h"
+   4          
+   5          unsigned short convertAnalogToDigital(unsigned int analog){
+   6   1              unsigned long int tmp;
+   7   1              tmp = analog * 500L;    //append 'L' to enforce data type to long
+   8   1              tmp  = tmp/255;
+   9   1              return tmp;                             
+  10   1      }
+  11          
+  12          void main(void){
+  13   1              unsigned int dat = 0;
+  14   1              unsigned short i = 0;
+  15   1      
+  16   1              while(1){
+  17   2                      i++;
+  18   2                      if (i>500){
+  19   3                              i=0;
+  20   3                              dat = ReadIIC(0x90, 0x02);
+  21   3                              dat = convertAnalogToDigital(dat);
+  22   3                      }
+  23   2                      DigShowNumber(3, dat/100, TRUE);
+  24   2                      DigShowNumber(2, dat%100/10, 0);
+  25   2                      DigShowNumber(1, dat%10, 0);
+  26   2              }
+  27   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    163    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       8
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
