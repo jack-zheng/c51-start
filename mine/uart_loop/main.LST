@@ -1,0 +1,57 @@
+C51 COMPILER V9.01   MAIN                                                                  07/29/2019 20:09:41 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h>
+   2          
+   3          /**
+   4          1. config register
+   5          2. bps related with timer1
+   6          3. 
+   7          */
+   8          
+   9          void uartInit(void){
+  10   1              SCON = 0x50; // 8bit uart
+  11   1              // PCON keep as default
+  12   1              // 9600 bps, config timer1, auto reset mode 2
+  13   1              TH1 = 0xFD;
+  14   1              TL1 = 0xFD;
+  15   1              TMOD = 0x20;
+  16   1              TR1 = 1; // start timer1
+  17   1      }
+  18          
+  19          void main(void){
+  20   1              unsigned char tmp;
+  21   1              uartInit();
+  22   1              while(1){
+  23   2                      if(RI){
+  24   3                              // already received 1 byte
+  25   3                              RI = 0;
+  26   3                              tmp = SBUF;
+  27   3                              if (tmp == 0x01){
+  28   4                                      P1 = 0;
+  29   4                              }else{
+  30   4                                      P1 = 0xff;
+  31   4                              }
+  32   3                      }       
+  33   2              }
+  34   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     38    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
