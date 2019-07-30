@@ -1,0 +1,59 @@
+C51 COMPILER V9.01   MAIN                                                                  07/30/2019 20:55:18 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h>
+   2          
+   3          /**
+   4          * in this test, I will use interrupt to flash LED 2 per second
+   5          */
+   6          unsigned char TIME_BASE;
+   7          
+   8          void Init(void)
+   9          {
+  10   1              TMOD = 0x01;
+  11   1              TH0 = (65536 - 45872) / 256;     // 定时50ms  //晶振：11.0592MHZ
+  12   1              TL0 = (65536 - 45872) % 256;
+  13   1              ET0 = 1;
+  14   1              TR0 = 1;
+  15   1              EA  = 1;
+  16   1      }
+  17          
+  18          
+  19          void Timer0_IRQ(void) interrupt 1
+  20          {
+  21   1              TH0 = (655365 - 45872) / 256;
+  22   1              TL0 = (655365 - 45872) % 256;
+  23   1              /* 进入中断50ms +1次 */
+  24   1              TIME_BASE++;
+  25   1              
+  26   1              if(TIME_BASE ==40)       //     20ms * 50ms = 刚好等于1000ms 也就是1秒
+  27   1              {
+  28   2                      TIME_BASE = 0;
+  29   2                      P1 = ~P1;
+  30   2              }
+  31   1      }
+  32          
+  33          void main(void){
+  34   1              Init();
+  35   1              while(1);
+  36   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     49    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,4 @@
+"STARTUP.obj",
+"LCD1602_drv.obj",
+"main.obj" 
+TO "drivertest" 
