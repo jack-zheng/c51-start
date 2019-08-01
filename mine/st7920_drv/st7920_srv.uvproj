@@ -43,7 +43,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\</OutputDirectory>
-          <OutputName>lcd12864</OutputName>
+          <OutputName>st7920_srv</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -355,6 +355,16 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>ST7920_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ST7920_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>ST7920_drv.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ST7920_drv.h</FilePath>
             </File>
           </Files>
         </Group>
