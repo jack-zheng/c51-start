@@ -68,23 +68,6 @@ static void DigOutput(uint8 SelectByte, uint8 SegmentByte)
 
 /**********************************************
 desc:
-    Turn on digital tube of special
-params:
-    DigSelect: position number, from 1 to 8 mean right to left
-    CustomSeg: number to show, hex format
-return:
-    void
-**********************************************/
-void DigShowCustom(uint8 DigSelect, uint8 CustomSeg)
-{
-    if(0<DigSelect<9)
-    {
-        DigOutput(Select[DigSelect],CustomSeg);
-    }
-}
-
-/**********************************************
-desc:
     turn on digital tube of special
 params:
     DigSelect: position number, from 1 to 8 mean right to left
@@ -106,21 +89,4 @@ void DigShowNumber(uint8 DigSelect, uint8 Number, bit Dp)
             DigOutput(Select[DigSelect],(Segment[Number]|0x80));
     	}
     }
-}
-
-
-/**********************************************
-desc:
-    init digital tube, and turn off them all
-params:
-	none
-return:
-    void
-**********************************************/
-void DigInit(void)
-{
-    DIG_DATA = 0;
-	DIG_SHCP = 0;
-	DIG_STCP = 0;
-    DigOutput(0x00,0xff);
 }

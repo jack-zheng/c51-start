@@ -85,7 +85,7 @@ Busy Check 的时候很坑的一点， 当 E 从 0 变为 1 时, BF flag 才会�
         + 2nd 90H-9FH
         + 3rd 88H-AFH
         + 4th 98H-BFH
-* 很棒的位图制作教程，不需要任何额外的工具 [How To](https://www.exploreembedded.com/wiki/Displaying_Images_and_Icons_on_GLCD),不过教程上有一点写错了，需要选择 Horizontal, 选 Vertical 会乱码的！！！
+* 很棒的位图制作教程，不需要任何额外的工具 [How To](https://www.exploreembedded.com/wiki/Displaying_Images_and_Icons_on_GLCD),不过教程上有一点写错了，需要选择 Horizontal, 选 Vertical 会乱码的！！！软件名字 'LCDAssistant'
 
 #### DS18B20
 

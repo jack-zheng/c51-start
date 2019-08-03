@@ -22,8 +22,6 @@
 #define DIG_STCP P23
 
 /* Define the Interface Functions*/
-void DigShowCustom(uint8 DigBit, uint8 CustomSeg);
 void DigShowNumber(uint8 DigBit, uint8 Number, bit Dp);
-void DigInit(void);
 
 #endif
