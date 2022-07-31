@@ -1,0 +1,87 @@
+C51 COMPILER V9.54   MAIN                                                                  08/01/2022 00:58:49 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.l
+                    -st) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          code unsigned char Nixie[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90}; 
+   4          
+   5          sbit DATA=P0^2; // bit data input
+   6          sbit SHCP=P0^4; // shift bit, 0->1, data move
+   7          sbit STCP=P2^3; // lock register control bit
+   8          
+   9          void digOutput(unsigned char pos, unsigned char val)
+  10          {
+  11   1        unsigned char i;
+  12   1        SHCP=0;
+  13   1        STCP=0;
+  14   1        // according to the schematic diagram, segment val is before position select
+  15   1        // so we process segment first
+  16   1        for(i=0; i<8; i++)
+  17   1        {
+  18   2          if(val & 0x80)
+  19   2          {
+  20   3            DATA=1;
+  21   3          }else{
+  22   3            DATA=0;
+  23   3          }
+  24   2          // change TTL to move data
+  25   2          SHCP=1;
+  26   2          SHCP=0;
+  27   2          // data move left
+  28   2          val<<=1;
+  29   2        }
+  30   1        // process position next
+  31   1        for(i=0; i<8; i++)
+  32   1        {
+  33   2          if(pos & 0x80)
+  34   2          {
+  35   3            DATA=1;
+  36   3          }else{
+  37   3            DATA=0;
+  38   3          }
+  39   2          // change TTL to move data
+  40   2          SHCP=1;
+  41   2          SHCP=0;
+  42   2          // data move left
+  43   2          pos<<=1;
+  44   2        }
+  45   1        // set STCP to 1, output the value
+  46   1        STCP=1;
+  47   1      }
+  48          
+  49          void main()
+  50          {
+  51   1        while(1){
+  52   2          digOutput(0x80, Nixie[1]);
+  53   2          digOutput(0x40, Nixie[2]);
+  54   2          digOutput(0x20, Nixie[3]);
+C51 COMPILER V9.54   MAIN                                                                  08/01/2022 00:58:49 PAGE 2   
+
+  55   2          digOutput(0x10, Nixie[4]);
+  56   2          digOutput(0x08, Nixie[5]);
+  57   2          digOutput(0x04, Nixie[6]);
+  58   2          digOutput(0x02, Nixie[7]);
+  59   2          digOutput(0x01, Nixie[8]);
+  60   2        }
+  61   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    127    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

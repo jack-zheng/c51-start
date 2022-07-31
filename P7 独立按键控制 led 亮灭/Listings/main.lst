@@ -1,0 +1,48 @@
+C51 COMPILER V9.54   MAIN                                                                  07/31/2022 21:35:42 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.l
+                    -st) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          /**
+   4          * left  P1.0
+   5          * up    P1.1
+   6          * down  P1.2
+   7          * right P1.3
+   8          *
+   9          * led   P1.7
+  10          */
+  11          void main()
+  12          {
+  13   1        while(1)
+  14   1        {
+  15   2          if(P1_2==0 && P1_1==0)
+  16   2          {
+  17   3            // if down pushed, light the led
+  18   3            P1_7 = 0;
+  19   3          } else {
+  20   3            // turn off led
+  21   3            P1_7 = 1;
+  22   3          }
+  23   2        }
+  24   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     14    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

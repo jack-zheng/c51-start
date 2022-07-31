@@ -1,0 +1,102 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/31/2022  22:24:02  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL5\C51\BIN\BL51.EXE .\Objects\main.obj TO .\Objects\Project PRINT (.\Listings\Project.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\main.obj (MAIN)
+  C:\KEIL5\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\Objects\Project (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     001DH     UNIT         ?PR?MAIN?MAIN
+            CODE    0020H     0015H     UNIT         ?PR?_DELAYXMS?MAIN
+            CODE    0035H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\Project (MAIN)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?MAIN
+
+?PR?MAIN?MAIN
+  +--> ?PR?_DELAYXMS?MAIN
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Project (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00A0H         PUBLIC        P2
+  B:0090H.0       PUBLIC        P1_0
+  C:0003H         PUBLIC        main
+  C:0020H         PUBLIC        _Delayxms
+  -------         PROC          _DELAYXMS
+  D:0006H         SYMBOL        xms
+  -------         DO            
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/31/2022  22:24:02  PAGE 2
+
+
+  D:0005H         SYMBOL        i
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:0020H         LINE#         3
+  C:0020H         LINE#         4
+  C:0020H         LINE#         7
+  C:002AH         LINE#         8
+  C:002AH         LINE#         9
+  C:002CH         LINE#         10
+  C:002EH         LINE#         12
+  C:002EH         LINE#         13
+  C:0030H         LINE#         14
+  C:0032H         LINE#         15
+  C:0034H         LINE#         16
+  -------         ENDPROC       _DELAYXMS
+  -------         PROC          MAIN
+  -------         DO            
+  D:0003H         SYMBOL        LedNum
+  -------         ENDDO         
+  C:0003H         LINE#         30
+  C:0003H         LINE#         31
+  C:0003H         LINE#         32
+  C:0005H         LINE#         33
+  C:0005H         LINE#         34
+  C:0005H         LINE#         35
+  C:0008H         LINE#         36
+  C:0008H         LINE#         37
+  C:000FH         LINE#         38
+  C:0012H         LINE#         39
+  C:0019H         LINE#         41
+  C:001AH         LINE#         42
+  C:001EH         LINE#         43
+  C:001EH         LINE#         44
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+Program Size: data=9.0 xdata=0 code=65
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
