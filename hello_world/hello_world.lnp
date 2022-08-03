@@ -1,4 +1,0 @@
-"STARTUP.obj",
-"led.obj" 
-TO "hello_world" 
-RAMSIZE(256) 

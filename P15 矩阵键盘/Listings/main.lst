@@ -1,0 +1,45 @@
+C51 COMPILER V9.54   MAIN                                                                  08/02/2022 21:40:11 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.l
+                    -st) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "LCD1602.h"
+   3          #include "MatrixKey.h"
+   4          
+   5          unsigned char KeyNum;
+   6          
+   7          void main()
+   8          {
+   9   1        LCD_Init();
+  10   1        LCD_ShowString(1,1,"Pushed Key:");
+  11   1        
+  12   1        while(1)
+  13   1        {
+  14   2          KeyNum = MatrixKey();
+  15   2          if(KeyNum)
+  16   2          {
+  17   3            LCD_ShowNum(2, 1, KeyNum, 2);
+  18   3          }
+  19   2          
+  20   2        }
+  21   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     40    ----
+   CONSTANT SIZE    =     12    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

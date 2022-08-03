@@ -1,0 +1,80 @@
+C51 COMPILER V9.54   MAIN                                                                  08/03/2022 00:18:09 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.l
+                    -st) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "LCD1602.h"
+   3          #include "MatrixKey.h"
+   4          
+   5          unsigned char KeyNum;
+   6          unsigned int Password,Count;
+   7          
+   8          void main()
+   9          {
+  10   1        LCD_Init();
+  11   1        LCD_ShowString(1,1,"Password:");
+  12   1        LCD_ShowNum(2, 1, 0, 4);
+  13   1        
+  14   1        while(1)
+  15   1        {
+  16   2          KeyNum = MatrixKey();
+  17   2          if(KeyNum)
+  18   2          {
+  19   3            // 只允许输入 4 位密码
+  20   3            if(Count<4)
+  21   3            {
+  22   4              // 每输入一位数，password 进位并加上输入的数
+  23   4              Password*=10;
+  24   4              Password+=KeyNum;
+  25   4              Count++;
+  26   4            }
+  27   3            LCD_ShowNum(2, 1, Password, 4);
+  28   3            
+  29   3            if(KeyNum==10)
+  30   3            {
+  31   4              // 检测密码
+  32   4              if(Password==2345)
+  33   4              {
+  34   5                LCD_ShowString(1,14,"OK ");
+  35   5              } else {
+  36   5                LCD_ShowString(1,14,"ERR");
+  37   5              }
+  38   4              // 检测完后重置标志位, 并清空输入显示
+  39   4              Password=0;
+  40   4              Count=0;
+  41   4              LCD_ShowNum(2, 1, 0, 4);
+  42   4            }
+  43   3            
+  44   3            // 如果是按下取消键，重置标志位, 并清空输入显示
+  45   3            if(KeyNum==11)
+  46   3            {
+  47   4              Password=0;
+  48   4              Count=0;
+  49   4              LCD_ShowNum(2, 1, 0, 4);
+  50   4            }
+  51   3          }
+  52   2          
+  53   2        }
+  54   1      }
+C51 COMPILER V9.54   MAIN                                                                  08/03/2022 00:18:09 PAGE 2   
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    187    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

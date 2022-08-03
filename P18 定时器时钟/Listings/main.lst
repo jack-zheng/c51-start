@@ -1,0 +1,77 @@
+C51 COMPILER V9.54   MAIN                                                                  08/04/2022 01:28:28 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.l
+                    -st) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "LCD1602.h"
+   3          #include "Timer0.h"
+   4          
+   5          unsigned char Hor=23,Min=59,Sec=55;
+   6          
+   7          void main()
+   8          {
+   9   1        LCD_Init();
+  10   1        Timer0Init();
+  11   1        // 预期时间格式 HH:MM:SS
+  12   1        LCD_ShowChar(1, 3, ':');
+  13   1        LCD_ShowChar(1, 6, ':');
+  14   1        // 显示时间
+  15   1        // Q: while 刷屏会不会影响屏幕寿命？
+  16   1        while(1)
+  17   1        {
+  18   2          LCD_ShowNum(1, 1, Hor, 2);
+  19   2          LCD_ShowNum(1, 4, Min, 2);
+  20   2          LCD_ShowNum(1, 7, Sec, 2);
+  21   2        }
+  22   1      }
+  23          
+  24          void Timer0_Rountine() interrupt 1
+  25          {
+  26   1        // 中断计数器
+  27   1        static unsigned int T0Count;
+  28   1        TL0 = 0x18;   //设置定时初值
+  29   1        TH0 = 0xFC;   //设置定时初值
+  30   1        T0Count++;
+  31   1        if(T0Count>=1000)
+  32   1        {
+  33   2          // 重置计数器
+  34   2          T0Count=0;
+  35   2          Sec++;
+  36   2          if(Sec>=60)
+  37   2          {
+  38   3            Sec=0;
+  39   3            Min++;
+  40   3            if(Min>=60)
+  41   3            {
+  42   4              Min=0;
+  43   4              Hor++;
+  44   4              if(Hor>=24)
+  45   4              {
+  46   5                Hor=0;
+  47   5              }
+  48   4            }
+  49   3          }
+  50   2        }
+  51   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+C51 COMPILER V9.54   MAIN                                                                  08/04/2022 01:28:28 PAGE 2   
+
+   CODE SIZE        =    142    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

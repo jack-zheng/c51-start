@@ -1,4 +1,0 @@
-"STARTUP.obj",
-"main.obj" 
-TO "lcd1602" 
-RAMSIZE(256) 
