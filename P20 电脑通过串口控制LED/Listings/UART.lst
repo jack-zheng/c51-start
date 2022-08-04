@@ -1,0 +1,59 @@
+C51 COMPILER V9.54   UART                                                                  08/05/2022 00:51:05 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN .\Objects\UART.obj
+COMPILER INVOKED BY: C:\Keil5\C51\BIN\C51.EXE UART.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\UART.l
+                    -st) TABS(2) OBJECT(.\Objects\UART.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          /**
+   4            * @brief 串口通信初始化，支持中断
+   5            * @param NA
+   6            * @retval NA
+   7            */
+   8          void UART_Init()    //4800bps@11.0592MHz
+   9          {
+  10   1        // 设置串口
+  11   1        PCON &= 0x7F; // 波特率不倍速, 
+  12   1        SCON = 0x50;  // 8位数据,可变波特率,允许接收数据
+  13   1        
+  14   1        // 设置 T1 定时器
+  15   1        TMOD &= 0x0F; // 清除定时器1模式位
+  16   1        TMOD |= 0x20; // 设定定时器1为8位自动重装方式
+  17   1        TL1 = 0xFA;   // TimerLow  设定定时初值
+  18   1        TH1 = 0xFA;   // TimerHigh 设定定时器重装值
+  19   1        TR1 = 1;      // TimerRun1 启动定时器1
+  20   1        
+  21   1        EA = 1;       // EnableAll 开启中断总开关
+  22   1        ES = 1;       // EnableSerial 开启串口中断开关
+  23   1      }
+  24          
+  25          /**
+  26            * @brief 通过串口发送一个字节
+  27            * @param 发送的字节信息
+  28            * @retval NA
+  29            */
+  30          void UART_Send(unsigned char Byte)
+  31          {
+  32   1        SBUF=Byte;
+  33   1        while(TI==0); // 等待发送完成，硬件置位完成标志位
+  34   1        TI=0;         // 软件复位标志位
+  35   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     33    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
