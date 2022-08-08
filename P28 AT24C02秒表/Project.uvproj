@@ -13,7 +13,7 @@
       <TargetOption>
         <TargetCommonOption>
           <Device>AT89C52</Device>
-          <Vendor>Microchip</Vendor>
+          <Vendor>Atmel</Vendor>
           <Cpu>IRAM(0-0xFF) IROM(0-0x1FFF) CLOCK(24000000)</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile>"LIB\STARTUP.A51" ("Standard 8051 Startup Code")</StartupFile>
@@ -230,7 +230,7 @@
               <RCB>
                 <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0xffff</Size>
+                <Size>0x10000</Size>
               </RCB>
               <RXB>
                 <Type>0</Type>
@@ -335,7 +335,7 @@
             <DataOverlaying>1</DataOverlaying>
             <OverlayString></OverlayString>
             <MiscControls></MiscControls>
-            <DisableWarningNumbers>16</DisableWarningNumbers>
+            <DisableWarningNumbers></DisableWarningNumbers>
             <LinkerCmdFile></LinkerCmdFile>
             <Assign></Assign>
             <ReserveString></ReserveString>
@@ -379,16 +379,6 @@
               <FilePath>.\Delay.h</FilePath>
             </File>
             <File>
-              <FileName>LCD1602.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\LCD1602.c</FilePath>
-            </File>
-            <File>
-              <FileName>LCD1602.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\LCD1602.h</FilePath>
-            </File>
-            <File>
               <FileName>Key.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Key.c</FilePath>
@@ -399,24 +389,14 @@
               <FilePath>.\Key.h</FilePath>
             </File>
             <File>
-              <FileName>AT24C02.c</FileName>
+              <FileName>Timer0.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\AT24C02.c</FilePath>
+              <FilePath>.\Timer0.c</FilePath>
             </File>
             <File>
-              <FileName>AT24C02.h</FileName>
+              <FileName>Timer0.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\AT24C02.h</FilePath>
-            </File>
-            <File>
-              <FileName>I2C.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\I2C.c</FilePath>
-            </File>
-            <File>
-              <FileName>I2C.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\I2C.h</FilePath>
+              <FilePath>.\Timer0.h</FilePath>
             </File>
           </Files>
         </Group>

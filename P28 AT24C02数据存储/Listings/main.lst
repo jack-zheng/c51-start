@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   MAIN                                                                  08/08/2022 01:58:11 PAGE 1   
+C51 COMPILER V9.54   MAIN                                                                  08/08/2022 21:29:21 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
@@ -12,29 +12,65 @@ line level    source
    2          #include <LCD1602.h>
    3          #include <AT24C02.h>
    4          #include <Delay.h>
-   5          
-   6          unsigned char Data;
-   7          
-   8          void main()
-   9          {
-  10   1        LCD_Init();
-  11   1      
-  12   1        AT24C02_WriteByte(0,13);
-  13   1        // 按照手册提示，写完之后需要等待5ms，等待数据存入芯片
-  14   1        Delay(10);
-  15   1        Data=AT24C02_ReadByte(0);
-  16   1        LCD_ShowNum(2,1,Data,4);
-  17   1      //  
-  18   1        while(1);
-  19   1      }
+   5          #include <Key.h>
+   6          
+   7          unsigned char KeyNum;
+   8          unsigned int Num;
+   9          
+  10          /**
+  11            * @brief 独立按键存储数据到AT24C02, 读取数据
+  12            * @param 
+  13            * @retval 
+  14            */
+  15          void main()
+  16          {
+  17   1        LCD_Init();
+  18   1        LCD_ShowNum(1,1,Num,5); // LCD第一行显示数字
+  19   1      
+  20   1        while(1)
+  21   1        {
+  22   2          KeyNum=Key();
+  23   2          if(KeyNum==1) //K1按键，Num自增
+  24   2          {
+  25   3            Num++;
+  26   3            LCD_ShowNum(1,1,Num,5);
+  27   3          }
+  28   2          if(KeyNum==2) //K2按键，Num自减
+  29   2          {
+  30   3            Num--;
+  31   3            LCD_ShowNum(1,1,Num,5);
+  32   3          }
+  33   2          if(KeyNum==3) //K3按键，向AT24C02写入数据
+  34   2          {
+  35   3            AT24C02_WriteByte(0,Num%256);
+  36   3            Delay(5);
+  37   3            AT24C02_WriteByte(1,Num/256);
+  38   3            Delay(5);
+  39   3            LCD_ShowString(2,1,"Write OK");
+  40   3            Delay(1000);
+  41   3            LCD_ShowString(2,1,"        ");
+  42   3          }
+  43   2          if(KeyNum==4) //K4按键，从AT24C02读取数据
+  44   2          {
+  45   3            Num=AT24C02_ReadByte(0);
+  46   3            Num|=AT24C02_ReadByte(1)<<8;
+  47   3            LCD_ShowNum(1,1,Num,5);
+  48   3            LCD_ShowString(2,1,"Read OK ");
+  49   3            Delay(1000);
+  50   3            LCD_ShowString(2,1,"        ");
+  51   3          }
+  52   2        }
+  53   1      }
+
+C51 COMPILER V9.54   MAIN                                                                  08/08/2022 21:29:21 PAGE 2   
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     40    ----
-   CONSTANT SIZE    =   ----    ----
+   CODE SIZE        =    212    ----
+   CONSTANT SIZE    =     27    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      1    ----
+   DATA SIZE        =      3    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
