@@ -1,0 +1,142 @@
+C51 COMPILER V9.54   MAIN                                                                  08/11/2022 02:33:59 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.l
+                    -st) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "DS18B20.h"
+   3          #include "LCD1602.h"
+   4          #include "AT24C02.h"
+   5          #include "Delay.h"
+   6          #include "Key.h"
+   7          
+   8          float T;
+   9          
+  10          unsigned char KeyNum;
+  11          char TH,TL;
+  12          
+  13          void main()
+  14          {
+  15   1        Timer0_Init();  // 开启定时器
+*** WARNING C206 IN LINE 15 OF main.c: 'Timer0_Init': missing function-prototype
+  16   1        DS18B20_ConvertT(); // 启动程序，先温度转化，覆盖默认值(85)
+  17   1        Delay(1000);
+  18   1        // 初始化温度显示
+  19   1        LCD_Init();
+  20   1        LCD_ShowString(1,1,"T:");
+  21   1        /* 初始化极值显示 */
+  22   1        LCD_ShowString(2,1,"TH:");
+  23   1        LCD_ShowString(2,9,"TL:");
+  24   1        // 先从EEPROM中读取极值
+  25   1        TH=AT24C02_ReadByte(0);
+  26   1        TL=AT24C02_ReadByte(1);
+  27   1        // 如果极值非法，给默认值
+  28   1        if(TH>125 || TL<-55 || TH<=TL) { TH=31; TL=25; }
+  29   1        LCD_ShowSignedNum(2,4,TH,3);
+  30   1        LCD_ShowSignedNum(2,12,TL,3);
+  31   1        while(1)
+  32   1        {
+  33   2          /* 温度显示 */
+  34   2          DS18B20_ConvertT();
+  35   2          T=DS18B20_ReadTemp();
+  36   2          if(T>0)
+  37   2          {
+  38   3            LCD_ShowChar(1,3,'+');
+  39   3          } else {
+  40   3            LCD_ShowChar(1,3,'-');
+  41   3            T=-T;
+  42   3          }
+  43   2          LCD_ShowNum(1,4,T,3);
+  44   2          LCD_ShowChar(1,7,'.');
+  45   2          LCD_ShowNum(1,8,((unsigned long)(T*100))%100,2);
+  46   2          
+  47   2          /* 阈值设置&显示 */
+  48   2            KeyNum=Key();
+  49   2            if(KeyNum)  // 只有按键按下的时候才刷新屏幕，节省时间
+  50   2            {
+  51   3              if(KeyNum==1) 
+  52   3              {
+  53   4                TH++;
+C51 COMPILER V9.54   MAIN                                                                  08/11/2022 02:33:59 PAGE 2   
+
+  54   4                if(TH>=125)
+  55   4                {
+  56   5                  TH=125;
+  57   5                }
+  58   4              }
+  59   3              if(KeyNum==2)
+  60   3              {
+  61   4                TH--;
+  62   4                if(TH<=TL){TH++;}
+  63   4              }
+  64   3              if(KeyNum==3)
+  65   3              {
+  66   4                TL++;
+  67   4                if(TL>=TH){TL--;}
+  68   4              }
+  69   3              if(KeyNum==4)
+  70   3              {
+  71   4                TL--;
+  72   4                if(TL<=-55)
+  73   4                {
+  74   5                  TL=-55;
+  75   5                }
+  76   4              }
+  77   3              LCD_ShowSignedNum(2,4,TH,3);
+  78   3              LCD_ShowSignedNum(2,12,TL,3);
+  79   3              
+  80   3              /* 将改变后的极值存入 EEPROM */
+  81   3              AT24C02_WriteByte(0,TH);
+  82   3              Delay(5);
+  83   3              AT24C02_WriteByte(1,TL);
+  84   3              Delay(5);
+  85   3            }
+  86   2            
+  87   2            // 如果当前温度大于设定的最值，显示报警信息
+  88   2            if(T>TH)
+  89   2            {
+  90   3              LCD_ShowString(1,13,"OV:H");
+  91   3            } else if(T<TL){
+  92   3              LCD_ShowString(1,13,"OV:L");
+  93   3            } else {
+  94   3              LCD_ShowString(1,13,"    ");
+  95   3            }
+  96   2          }
+  97   1      }
+  98          
+  99          void Timer0_Rountine() interrupt 1
+ 100          {
+ 101   1        // 中断计数器
+ 102   1        static unsigned int T0Count;
+ 103   1        TL0 = 0x18;   //设置定时初值
+ 104   1        TH0 = 0xFC;   //设置定时初值
+ 105   1        T0Count++;
+ 106   1        // 按键扫描间隔20ms
+ 107   1        if(T0Count>=20)
+ 108   1        {
+ 109   2          // 重置计数器
+ 110   2          T0Count=0;
+ 111   2          Key_Loop();
+ 112   2        }
+ 113   1      }
+
+
+C51 COMPILER V9.54   MAIN                                                                  08/11/2022 02:33:59 PAGE 3   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    619    ----
+   CONSTANT SIZE    =     26    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      9    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

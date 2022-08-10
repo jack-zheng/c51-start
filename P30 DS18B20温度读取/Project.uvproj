@@ -369,34 +369,44 @@
               <FilePath>.\main.c</FilePath>
             </File>
             <File>
-              <FileName>Key.c</FileName>
+              <FileName>DS18B20.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Key.c</FilePath>
+              <FilePath>.\DS18B20.c</FilePath>
             </File>
             <File>
-              <FileName>Key.h</FileName>
+              <FileName>DS18B20.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\Key.h</FilePath>
+              <FilePath>.\DS18B20.h</FilePath>
             </File>
             <File>
-              <FileName>Timer0.c</FileName>
+              <FileName>OneWire.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Timer0.c</FilePath>
+              <FilePath>.\OneWire.c</FilePath>
             </File>
             <File>
-              <FileName>Timer0.h</FileName>
+              <FileName>OneWire.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\Timer0.h</FilePath>
+              <FilePath>.\OneWire.h</FilePath>
             </File>
             <File>
-              <FileName>Nixie.c</FileName>
+              <FileName>LCD1602.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Nixie.c</FilePath>
+              <FilePath>.\LCD1602.c</FilePath>
             </File>
             <File>
-              <FileName>Nixie.h</FileName>
+              <FileName>LCD1602.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\Nixie.h</FilePath>
+              <FilePath>.\LCD1602.h</FilePath>
+            </File>
+            <File>
+              <FileName>Delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>Delay.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Delay.h</FilePath>
             </File>
           </Files>
         </Group>

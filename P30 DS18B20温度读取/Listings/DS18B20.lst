@@ -1,0 +1,65 @@
+C51 COMPILER V9.54   DS18B20                                                               08/11/2022 01:18:32 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE DS18B20
+OBJECT MODULE PLACED IN .\Objects\DS18B20.obj
+COMPILER INVOKED BY: C:\Keil5\C51\BIN\C51.EXE DS18B20.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\DS1
+                    -8B20.lst) TABS(2) OBJECT(.\Objects\DS18B20.obj)
+
+line level    source
+
+   1          #include "OneWire.h"
+   2          #include "LCD1602.h"
+   3          
+   4          #define DS18B20_SKIP_ROM        0xCC
+   5          #define DS18B20_CONVERT_T       0x44
+   6          #define DS18B20_READ_SCRATCHPAD 0xBE
+   7          
+   8          /**
+   9            * @brief 发送温度转化命令
+  10            * @param 无
+  11            * @retval 无
+  12            */
+  13          void DS18B20_ConvertT()
+  14          {
+  15   1        OneWire_Init();
+  16   1        OneWire_SendByte(DS18B20_SKIP_ROM);
+  17   1        OneWire_SendByte(DS18B20_CONVERT_T);
+  18   1      }
+  19          
+  20          /**
+  21            * @brief 读取温度
+  22            * @param 无
+  23            * @retval 温度
+  24            */
+  25          float DS18B20_ReadTemp()
+  26          {
+  27   1        unsigned char TLSB, TMSB;
+  28   1        int Temp;
+  29   1        float T;
+  30   1        OneWire_Init();
+  31   1        OneWire_SendByte(DS18B20_SKIP_ROM);
+  32   1        OneWire_SendByte(DS18B20_READ_SCRATCHPAD);
+  33   1        // 接收16位温度数据，并整合
+  34   1        TLSB=OneWire_ReadByte();
+  35   1        TMSB=OneWire_ReadByte();
+  36   1        Temp=(TMSB<<8)|TLSB;
+  37   1        // LCD_ShowBinNum(1,1,Temp,16);// 显示二进制数做对比
+  38   1        // 转化位浮点型便于计算
+  39   1        T=Temp/16.0;
+  40   1        return T;
+  41   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     57    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
