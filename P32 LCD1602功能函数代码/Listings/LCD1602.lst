@@ -1,0 +1,252 @@
+C51 COMPILER V9.54   LCD1602                                                               08/12/2022 00:50:12 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE LCD1602
+OBJECT MODULE PLACED IN .\Objects\LCD1602.obj
+COMPILER INVOKED BY: C:\Keil5\C51\BIN\C51.EXE LCD1602.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\LCD
+                    -1602.lst) TABS(2) OBJECT(.\Objects\LCD1602.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          // 管脚定义
+   4          sbit LCD_RS=P2^7;
+   5          sbit LCD_RW=P2^6;
+   6          sbit LCD_EN=P2^5;
+   7          
+   8          #define LCD_DATA_POART P0
+   9          
+  10          /**
+  11            * @brief 1ms延时，为了方便移植，没有重用类库
+  12            * @param 无
+  13            * @retval 无
+  14            */
+  15          void Delay()    //@12.000MHz 1ms
+  16          {
+  17   1        unsigned char i, j;
+  18   1      
+  19   1        i = 12;
+  20   1        j = 169;
+  21   1        do
+  22   1        {
+  23   2          while (--j);
+  24   2        } while (--i);
+  25   1      }
+  26          
+  27          /**
+  28            * @brief 写一位指令
+  29            * @param 指令
+  30            * @retval 无
+  31            */
+  32          void LCD_WriteCommand(unsigned char Command)
+  33          {
+  34   1        LCD_RS=0;
+  35   1        LCD_RW=0;
+  36   1        LCD_DATA_POART=Command;
+  37   1        LCD_EN=1;
+  38   1        Delay();  // 时序上时间足够，实际上不行，可能时字模转化需要事件
+  39   1        LCD_EN=0;
+  40   1        Delay();
+  41   1      }
+  42          
+  43          /**
+  44            * @brief 写一位数据
+  45            * @param 数据
+  46            * @retval 无
+  47            */
+  48          void LCD_WriteData(unsigned char Data)
+  49          {
+  50   1        LCD_RS=1;
+  51   1        LCD_RW=0;
+  52   1        LCD_DATA_POART=Data;
+  53   1        LCD_EN=1;
+  54   1        Delay();  // 时序上时间足够，实际上不行，可能时字模转化需要事件
+C51 COMPILER V9.54   LCD1602                                                               08/12/2022 00:50:12 PAGE 2   
+
+  55   1        LCD_EN=0;
+  56   1        Delay();
+  57   1      }
+  58          
+  59          /**
+  60            * @brief 初始化，设置显示模式
+  61            * @param 无
+  62            * @retval 无
+  63            */
+  64          void LCD_Init()
+  65          {
+  66   1        LCD_WriteCommand(0x01); // 清屏，光标复位
+  67   1        LCD_WriteCommand(0x06); // 读写后 AC+1，画面不动
+  68   1        LCD_WriteCommand(0x0C); // 显示开，光标关，闪烁关
+  69   1        LCD_WriteCommand(0x38); // 两排显示，8位数据接口
+  70   1      }
+  71          
+  72          /**
+  73            * @brief 移动光标
+  74            * @param Line 行号 1-2
+  75            * @param Column 列 1-16
+  76            * @retval 无
+  77            */
+  78          void LCD_SetCursor(unsigned char Line, unsigned char Column)
+  79          {
+  80   1        if(Line==1)
+  81   1        {
+  82   2          // LCD_WriteCommand(0x80|Column-1); 视频教程用了|但是语义上用+也是一样的，文档里面
+             -用的就是+
+  83   2          LCD_WriteCommand(0x80+Column-1);
+  84   2        } else if (Line==2)
+  85   1        {
+  86   2          LCD_WriteCommand(0x80+(Column-1+0x40));
+  87   2        }
+  88   1      }
+  89          
+  90          /**
+  91            * @brief 写一个字符
+  92            * @param Line 行号 1-2
+  93            * @param Column 列 1-16
+  94            * @param Char 要显示的字符
+  95            * @retval 无
+  96            */
+  97          void LCD_ShowChar(unsigned char Line, unsigned char Column, unsigned char Char)
+  98          {
+  99   1        LCD_SetCursor(Line, Column);
+ 100   1        LCD_WriteData(Char);
+ 101   1      }
+ 102          
+ 103          /**
+ 104            * @brief 写一个字符串
+ 105            * @param Line 行号 1-2
+ 106            * @param Column 列 1-16
+ 107            * @param String 要显示的字符串
+ 108            * @retval 无
+ 109            */
+ 110          void LCD_ShowString(unsigned char Line, unsigned char Column, char *String)
+ 111          {
+ 112   1        unsigned char i;
+ 113   1        LCD_SetCursor(Line, Column);
+ 114   1        for(i=0;String[i]!='\0';i++)
+ 115   1        {
+C51 COMPILER V9.54   LCD1602                                                               08/12/2022 00:50:12 PAGE 3   
+
+ 116   2          LCD_WriteData(String[i]);
+ 117   2        }
+ 118   1      }
+ 119          
+ 120          /**
+ 121            * @brief 返回值=X的Y次方
+ 122            */
+ 123          int LCD_Pow(int X, int Y)
+ 124          {
+ 125   1        unsigned char i;
+ 126   1        int Result=1;
+ 127   1        for(i=0;i<Y;i++)
+ 128   1        {
+ 129   2          Result*=X;
+ 130   2        }
+ 131   1        return Result;
+ 132   1      }
+ 133          
+ 134          /**
+ 135            * @brief 显示给定数字
+ 136            * @param Line 行号 1-2
+ 137            * @param Column 列 1-16
+ 138            * @param Number 要显示的数字
+ 139            * @param Length 数字长度
+ 140            * @retval 无
+ 141            */
+ 142          void LCD_ShowNum(unsigned char Line, unsigned char Column, unsigned int Number, unsigned char Length)
+ 143          {
+ 144   1        unsigned char i;
+ 145   1        LCD_SetCursor(Line, Column);
+ 146   1        for(i=Length;i>0;i--)
+ 147   1        {
+ 148   2          LCD_WriteData('0'+Number/LCD_Pow(10,i-1)%10); // 写数据的时候要做偏移量转化
+ 149   2        }
+ 150   1      }
+ 151          
+ 152          /**
+ 153            * @brief 显示给定有符号数字
+ 154            * @param Line 行号 1-2
+ 155            * @param Column 列 1-16
+ 156            * @param Number 要显示的有符号数字
+ 157            * @param Length 数字长度
+ 158            * @retval 无
+ 159            */
+ 160          void LCD_ShowSignedNum(unsigned char Line, unsigned char Column, int Number, unsigned char Length)
+ 161          {
+ 162   1        unsigned char i;
+ 163   1        unsigned int Num;
+ 164   1        LCD_SetCursor(Line, Column);
+ 165   1        
+ 166   1        if(Number>0)
+ 167   1        {
+ 168   2          LCD_WriteData('+');
+ 169   2          Num=Number;
+ 170   2        } else {
+ 171   2          LCD_WriteData('-');
+ 172   2          Num=-Number;  // 当Number为-32768时，Number=-Number 转化会失败，所以声明一个无符号int�
+             -��转换
+ 173   2        }
+ 174   1        for(i=Length;i>0;i--)
+ 175   1        {
+ 176   2          LCD_WriteData('0'+Num/LCD_Pow(10,i-1)%10); // 写数据的时候要做偏移量转化
+C51 COMPILER V9.54   LCD1602                                                               08/12/2022 00:50:12 PAGE 4   
+
+ 177   2        }
+ 178   1      }
+ 179          
+ 180          /**
+ 181            * @brief 16进制显示给定数字
+ 182            * @param Line 行号 1-2
+ 183            * @param Column 列 1-16
+ 184            * @param Number 要显示的数字
+ 185            * @param Length 数字长度
+ 186            * @retval 无
+ 187            */
+ 188          void LCD_ShowHexNum(unsigned char Line, unsigned char Column, unsigned int Number, unsigned char Length)
+ 189          {
+ 190   1        unsigned char i,HexNum;
+ 191   1        LCD_SetCursor(Line, Column);
+ 192   1        for(i=Length;i>0;i--)
+ 193   1        {
+ 194   2          HexNum=Number/LCD_Pow(16,i-1)%16;
+ 195   2          if(HexNum<10)
+ 196   2          {
+ 197   3            LCD_WriteData('0'+HexNum);
+ 198   3          } else {
+ 199   3            LCD_WriteData('A'+HexNum-10);
+ 200   3          }
+ 201   2        }
+ 202   1      }
+ 203          
+ 204          /**
+ 205            * @brief 2进制显示给定数字
+ 206            * @param Line 行号 1-2
+ 207            * @param Column 列 1-16
+ 208            * @param Number 要显示的数字
+ 209            * @param Length 数字长度 1-16
+ 210            * @retval 无
+ 211            */
+ 212          void LCD_ShowBinNum(unsigned char Line, unsigned char Column, unsigned int Number, unsigned char Length)
+ 213          {
+ 214   1        unsigned char i;
+ 215   1        LCD_SetCursor(Line, Column);
+ 216   1        for(i=Length;i>0;i--)
+ 217   1        {
+ 218   2          LCD_WriteData('0'+Number/LCD_Pow(2,i-1)%2);
+ 219   2        }
+ 220   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    395    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      29
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

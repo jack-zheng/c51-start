@@ -1,0 +1,70 @@
+C51 COMPILER V9.54   MAIN                                                                  08/12/2022 21:05:21 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.l
+                    -st) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include <Key.h>
+   3          #include <Nixie.h>
+   4          #include <Timer0.h>
+   5          
+   6          unsigned char KeyNum,Speed;
+   7          unsigned char Counter,Compare;
+   8          sbit LED=P1^7;
+   9          
+  10          void main()
+  11          {
+  12   1        Timer0_Init();
+  13   1        while(1)
+  14   1        {
+  15   2          KeyNum=Key();
+  16   2      
+  17   2          if(KeyNum==1)
+  18   2          {
+  19   3            Speed++;
+  20   3            Speed%=4;
+  21   3            if(Speed==0) {Compare=0;}
+  22   3            if(Speed==1) {Compare=50;}
+  23   3            if(Speed==2) {Compare=75;}
+  24   3            if(Speed==3) {Compare=100;}
+  25   3          }
+  26   2          SegmentDisplay(1, Speed);
+  27   2        }
+  28   1      }
+  29          
+  30          
+  31          void Timer0_Rountine() interrupt 1
+  32          {
+  33   1        // 中断计数器
+  34   1        TL0 = 0x9C;   //设置定时初值
+  35   1        TH0 = 0xFF;   //设置定时初值
+  36   1        Counter++;
+  37   1        Counter%=100;
+  38   1        if(Counter>Compare)
+  39   1        {
+  40   2          LED=1;
+  41   2        } else {
+  42   2          LED=0;
+  43   2        }
+  44   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    101    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V9.54   MAIN                                                                  08/12/2022 21:05:21 PAGE 2   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

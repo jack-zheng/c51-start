@@ -1,0 +1,74 @@
+C51 COMPILER V9.54   NIXIE                                                                 08/12/2022 20:45:52 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE NIXIE
+OBJECT MODULE PLACED IN .\Objects\Nixie.obj
+COMPILER INVOKED BY: C:\Keil5\C51\BIN\C51.EXE Nixie.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\Nixie
+                    -.lst) TABS(2) OBJECT(.\Objects\Nixie.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          sbit DATA=P0^2; // bit data input
+   4          sbit SHCP=P0^4; // shift bit, 0->1, data move
+   5          sbit STCP=P2^3; // lock register control bit
+   6          
+   7          code unsigned char Nixie[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90}; 
+   8          
+   9          void SegmentDisplay(unsigned char pos, unsigned char val)
+  10          {
+  11   1        unsigned char seg= Nixie[val];
+  12   1        unsigned char i;
+  13   1        SHCP=0;
+  14   1        STCP=0;
+  15   1        // according to the schematic diagram, segment val is before position select
+  16   1        // so we process segment first
+  17   1        for(i=0; i<8; i++)
+  18   1        {
+  19   2          if(seg & 0x80)
+  20   2          {
+  21   3            DATA=1;
+  22   3          }else{
+  23   3            DATA=0;
+  24   3          }
+  25   2          // change TTL to move data
+  26   2          SHCP=1;
+  27   2          SHCP=0;
+  28   2          // data move left
+  29   2          seg<<=1;
+  30   2        }
+  31   1        // process position next
+  32   1        for(i=0; i<8; i++)
+  33   1        {
+  34   2          if(pos & 0x80)
+  35   2          {
+  36   3            DATA=1;
+  37   3          }else{
+  38   3            DATA=0;
+  39   3          }
+  40   2          // change TTL to move data
+  41   2          SHCP=1;
+  42   2          SHCP=0;
+  43   2          // data move left
+  44   2          pos<<=1;
+  45   2        }
+  46   1        // set STCP to 1, output the value
+  47   1        STCP=1;
+  48   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     61    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+C51 COMPILER V9.54   NIXIE                                                                 08/12/2022 20:45:52 PAGE 2   
+
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
